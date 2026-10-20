@@ -1,8 +1,18 @@
 // ============================================================
-// Wedding invite — Minh Khoa & Thu Hà
+// Wedding invite — Tường Duy & Như Ngọc
 // ============================================================
 
 const WEDDING_DATE = new Date("2026-11-29T18:00:00+07:00");
+
+// 29/11/2026 18:00–21:00 Asia/Ho_Chi_Minh → UTC 11:00–14:00
+const CALENDAR_EVENT = {
+  title: "Tiệc cưới Tường Duy ❤ Như Ngọc",
+  startUtc: "20261129T110000Z",
+  endUtc:   "20261129T140000Z",
+  location: "Queen Plaza Tân Bình, 91B2 Phạm Văn Hai, Tân Sơn Hòa, Hồ Chí Minh",
+  mapsUrl:  "https://maps.app.goo.gl/ytBXpzy8v4EaYTEY6",
+  details:  "Trân trọng kính mời quý khách đến chung vui trong ngày cưới của Tường Duy & Như Ngọc.",
+};
 
 // ---------- Loader ----------
 window.addEventListener("load", () => {
@@ -139,6 +149,22 @@ musicBtn.addEventListener("click", async () => {
     }
   }
 });
+
+// ---------- Add to Google Calendar ----------
+(() => {
+  const btn = document.getElementById("addToCalendar");
+  if (!btn) return;
+  const details = `${CALENDAR_EVENT.details}\n\nBản đồ: ${CALENDAR_EVENT.mapsUrl}`;
+  const params = new URLSearchParams({
+    action:   "TEMPLATE",
+    text:     CALENDAR_EVENT.title,
+    dates:    `${CALENDAR_EVENT.startUtc}/${CALENDAR_EVENT.endUtc}`,
+    details:  details,
+    location: CALENDAR_EVENT.location,
+    ctz:      "Asia/Ho_Chi_Minh",
+  });
+  btn.href = `https://calendar.google.com/calendar/render?${params.toString()}`;
+})();
 
 // ---------- Smooth scroll offset for fixed nav ----------
 document.querySelectorAll('a[href^="#"]').forEach((a) => {

@@ -682,6 +682,25 @@ section { position: relative; padding: 120px 0; }
   font-size: 22px;
   color: var(--sage-700);
 }
+.cal-btn {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 1px 0 2px;
+  color: var(--sage-700);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--sage-500);
+  transition: color .3s ease, border-color .3s ease;
+  position: relative;
+  z-index: 2;
+}
+.cal-btn:hover {
+  color: var(--sage-900);
+  border-color: var(--sage-900);
+}
 
 .events .calendar { background: rgba(250, 246, 240, 0.97); }
 
