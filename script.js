@@ -2,7 +2,7 @@
 // Wedding invite — Minh Khoa & Thu Hà
 // ============================================================
 
-const WEDDING_DATE = new Date("2026-12-14T11:00:00+07:00");
+const WEDDING_DATE = new Date("2026-11-29T18:00:00+07:00");
 
 // ---------- Loader ----------
 window.addEventListener("load", () => {
