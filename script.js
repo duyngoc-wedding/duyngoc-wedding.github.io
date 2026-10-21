@@ -145,37 +145,68 @@ document.querySelectorAll(".copyable").forEach((el) => {
   });
 });
 
-// ---------- Gift box → modal ----------
+// ---------- Gift box → opening sequence → modal ----------
 (() => {
-  const btn = document.getElementById("giftBoxToggle");
+  const gift = document.getElementById("giftbox");
+  const confetti = document.getElementById("giftboxConfetti");
   const modal = document.getElementById("giftModal");
-  if (!btn || !modal) return;
+  if (!gift || !confetti || !modal) return;
 
-  const openModal = () => {
-    btn.classList.add("opened");
-    btn.setAttribute("aria-expanded", "true");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const OPEN_MODAL_AT = 2200;
+  const BURST_AT = 1000;
+  let busy = false;
+
+  const colors = ["#c99a9a", "#dcb6b6", "#e8cdcb", "#a3b392", "#d6b27c"];
+  const heart = '<svg viewBox="0 0 12 11"><path d="M6 11L1 6A3 3 0 0 1 6 1.6A3 3 0 0 1 11 6Z" fill="currentColor"/></svg>';
+
+  function burst() {
+    confetti.innerHTML = "";
+    for (let i = 0; i < 22; i++) {
+      const el = document.createElement("i");
+      const kind = ["heart", "petal", "dot"][i % 3];
+      el.className = kind;
+      if (kind === "heart") el.innerHTML = heart;
+      const angle = (-90 + (Math.random() * 150 - 75)) * Math.PI / 180;
+      const dist = 80 + Math.random() * 90;
+      el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+      el.style.setProperty("--dy", Math.sin(angle) * dist + "px");
+      el.style.setProperty("--rot", (Math.random() * 540 - 270) + "deg");
+      el.style.setProperty("--delay", Math.random() * 0.25 + "s");
+      el.style.setProperty("--c", colors[i % colors.length]);
+      confetti.appendChild(el);
+    }
+  }
+
+  const openGiftModal = () => {
     if (typeof modal.showModal === "function") modal.showModal();
     else modal.setAttribute("open", "");
   };
-  const closeModal = () => {
+  const closeGiftModal = () => {
     if (typeof modal.close === "function") modal.close();
     else modal.removeAttribute("open");
   };
+  const resetGiftBox = () => {
+    gift.classList.remove("is-opening");
+    confetti.innerHTML = "";
+    busy = false;
+  };
 
-  btn.addEventListener("click", openModal);
+  gift.addEventListener("click", () => {
+    if (busy) return;
+    busy = true;
+    if (reduce) { setTimeout(openGiftModal, 200); return; }
+    gift.classList.add("is-opening");
+    setTimeout(burst, BURST_AT);
+    setTimeout(openGiftModal, OPEN_MODAL_AT);
+  });
 
-  // Close via [data-close] (× button or backdrop)
+  // Close modal via × button, backdrop click, or Esc; reset the box after each close
   modal.addEventListener("click", (e) => {
-    if (e.target.closest("[data-close]")) { closeModal(); return; }
-    // Backdrop click (clicking the dialog element itself, outside the content box)
-    if (e.target === modal) closeModal();
+    if (e.target.closest("[data-close]")) { closeGiftModal(); return; }
+    if (e.target === modal) closeGiftModal();
   });
-
-  // Reset gift-box state whenever the dialog closes (×, Esc, backdrop)
-  modal.addEventListener("close", () => {
-    btn.classList.remove("opened");
-    btn.setAttribute("aria-expanded", "false");
-  });
+  modal.addEventListener("close", resetGiftBox);
 })();
 
 // ---------- RSVP form ----------
