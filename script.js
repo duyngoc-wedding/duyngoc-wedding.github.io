@@ -49,24 +49,46 @@ const sEl = document.querySelector("[data-s]");
 
 function pad(n) { return String(Math.max(0, n)).padStart(2, "0"); }
 
+function setDigit(el, next) {
+  if (!el || el.textContent === next) return;
+  el.textContent = next;
+  el.classList.remove("flip");
+  el.getBoundingClientRect();
+  el.classList.add("flip");
+}
+
 function tick() {
   const now = new Date();
   const diff = WEDDING_DATE - now;
   if (diff <= 0) {
-    dEl.textContent = "00"; hEl.textContent = "00"; mEl.textContent = "00"; sEl.textContent = "00";
+    [dEl, hEl, mEl, sEl].forEach((el) => el && (el.textContent = "00"));
     return;
   }
   const days = Math.floor(diff / 86400000);
   const hours = Math.floor((diff % 86400000) / 3600000);
   const mins = Math.floor((diff % 3600000) / 60000);
   const secs = Math.floor((diff % 60000) / 1000);
-  dEl.textContent = pad(days);
-  hEl.textContent = pad(hours);
-  mEl.textContent = pad(mins);
-  sEl.textContent = pad(secs);
+  setDigit(dEl, pad(days));
+  setDigit(hEl, pad(hours));
+  setDigit(mEl, pad(mins));
+  setDigit(sEl, pad(secs));
 }
 tick();
 setInterval(tick, 1000);
+
+// ---------- Divider draw-in ----------
+const dividerObs = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting) {
+        e.target.classList.add("drawn");
+        dividerObs.unobserve(e.target);
+      }
+    });
+  },
+  { threshold: 0.5 }
+);
+document.querySelectorAll(".divider").forEach((d) => dividerObs.observe(d));
 
 // ---------- Scroll reveal ----------
 const observer = new IntersectionObserver(
@@ -96,18 +118,27 @@ function showToast(msg) {
   t._timer = setTimeout(() => t.classList.remove("show"), 1800);
 }
 
+function flashCopied(el) {
+  el.classList.remove("copied");
+  el.getBoundingClientRect();
+  el.classList.add("copied");
+  clearTimeout(el._copyTimer);
+  el._copyTimer = setTimeout(() => el.classList.remove("copied"), 1600);
+}
+
 document.querySelectorAll(".copyable").forEach((el) => {
   el.addEventListener("click", async () => {
     const text = el.dataset.copy || el.textContent.trim();
     try {
       await navigator.clipboard.writeText(text);
       showToast("Đã sao chép số tài khoản ✓");
+      flashCopied(el);
     } catch {
       const ta = document.createElement("textarea");
       ta.value = text;
       document.body.appendChild(ta);
       ta.select();
-      try { document.execCommand("copy"); showToast("Đã sao chép ✓"); }
+      try { document.execCommand("copy"); showToast("Đã sao chép ✓"); flashCopied(el); }
       catch { showToast("Không thể sao chép"); }
       ta.remove();
     }
