@@ -1142,7 +1142,18 @@ section { position: relative; padding: 120px 0; }
   padding: 80px 0 40px;
   text-align: center;
   position: relative;
+  overflow: hidden;
 }
+
+/* Decorative olive branches in opposite corners */
+.ol-sprig { position: absolute; width: 190px; height: 50px; pointer-events: none; }
+.ol-sprig.ol-tl { top: 36px; left: -30px; transform: rotate(-30deg); }
+.ol-sprig.ol-br { bottom: 150px; right: -34px; transform: rotate(150deg) scale(.8); }
+.ol-stem  { fill: none; stroke: #a1ae97; stroke-width: 1.1; stroke-linecap: round; }
+.ol-leaf  { fill: #a1ae97; }
+.ol-leaf.ol-alt { fill: #c3cdb7; }
+.ol-vein  { fill: none; stroke: #4a5a3f; stroke-width: .6; opacity: .45; }
+.ol-olive { fill: #6b7f5c; stroke: #a1ae97; stroke-width: .6; }
 .footer-decor {
   color: var(--sage-300);
   width: 400px;

@@ -15,6 +15,32 @@
 </head>
 <body>
 
+  <!-- Olive branch defs (reused by footer decorations) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <g id="olive-leaf">
+        <path d="M0 0C6-4.2 15-4.6 24 0C15 4.6 6 4.2 0 0Z"/>
+        <path class="ol-vein" d="M2 0H21"/>
+      </g>
+      <g id="olive-branch">
+        <path class="ol-stem" d="M16 18C60 26 115 22 176 12"/>
+        <use href="#olive-leaf" class="ol-leaf ol-alt" transform="translate(26.8 19.7) rotate(-30.4) scale(1.11)"/>
+        <use href="#olive-leaf" class="ol-leaf" transform="translate(41.9 21.3) rotate(42.4) scale(1.05)"/>
+        <use href="#olive-leaf" class="ol-leaf" transform="translate(57.7 22.1) rotate(-36.3) scale(0.99)"/>
+        <use href="#olive-leaf" class="ol-leaf ol-alt" transform="translate(74.2 22.2) rotate(37.2) scale(0.93)"/>
+        <use href="#olive-leaf" class="ol-leaf" transform="translate(91.2 21.7) rotate(-40.8) scale(0.87)"/>
+        <use href="#olive-leaf" class="ol-leaf" transform="translate(108.9 20.5) rotate(33.3) scale(0.81)"/>
+        <use href="#olive-leaf" class="ol-leaf ol-alt" transform="translate(127.1 18.8) rotate(-44.2) scale(0.75)"/>
+        <use href="#olive-leaf" class="ol-leaf" transform="translate(145.9 16.5) rotate(30.4) scale(0.69)"/>
+        <use href="#olive-leaf" class="ol-leaf" transform="translate(165.1 13.7) rotate(-46.7) scale(0.63)"/>
+        <use href="#olive-leaf" class="ol-leaf" transform="translate(176 12) rotate(-9.3) scale(.55)"/>
+        <ellipse class="ol-olive" cx="58.4" cy="28.1" rx="3.6" ry="4.6" transform="rotate(22 58.4 28.1)"/>
+        <ellipse class="ol-olive" cx="67.6" cy="31.3" rx="3.6" ry="4.6" transform="rotate(20 67.6 31.3)"/>
+        <ellipse class="ol-olive" cx="109.3" cy="13.5" rx="3.6" ry="4.6" transform="rotate(15 109.3 13.5)"/>
+      </g>
+    </defs>
+  </svg>
+
   <!-- Loader -->
   <div class="loader" id="loader">
     <div class="loader-inner">
@@ -494,24 +520,14 @@
           </div>
           <div class="bank-row">
             <span>Số tài khoản</span>
-            <b class="copyable" data-copy="9876543210">9876 543 210 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></b>
+            <b class="copyable" data-copy="9876543210">0721000667498 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></b>
           </div>
           <div class="bank-row">
             <span>Chủ tài khoản</span><b>NGUYEN THI NHU NGOC</b>
           </div>
           <div class="qr-box">
-            <div class="qr-placeholder">
-              <svg viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
-                <rect x="5" y="5" width="25" height="25"/>
-                <rect x="70" y="5" width="25" height="25"/>
-                <rect x="5" y="70" width="25" height="25"/>
-                <rect x="40" y="40" width="8" height="8"/>
-                <rect x="55" y="55" width="8" height="8"/>
-                <rect x="70" y="40" width="8" height="8"/>
-                <rect x="40" y="70" width="8" height="8"/>
-                <rect x="85" y="70" width="8" height="8"/>
-                <rect x="70" y="85" width="8" height="8"/>
-              </svg>
+            <div class="qr-image">
+              <img src="assets/images/qr-ngoc.png" alt="Mã QR chuyển khoản Vietcombank — Nguyễn Thị Như Ngọc" loading="lazy" />
             </div>
             <p>Quét mã QR để chuyển khoản</p>
           </div>
@@ -522,6 +538,8 @@
 
   <!-- WISHES / FOOTER -->
   <footer class="footer">
+    <svg class="ol-sprig ol-tl" viewBox="0 0 190 50" aria-hidden="true"><use href="#olive-branch"/></svg>
+    <svg class="ol-sprig ol-br" viewBox="0 0 190 50" aria-hidden="true"><use href="#olive-branch"/></svg>
     <div class="footer-decor" aria-hidden="true">
       <svg viewBox="0 0 400 100" fill="none">
         <path d="M0 50 Q 100 20, 200 50 T 400 50" stroke="currentColor" stroke-width="1"/>
