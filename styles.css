@@ -1057,14 +1057,165 @@ section { position: relative; padding: 120px 0; }
 .gift {
   background: linear-gradient(180deg, var(--cream-2) 0%, var(--sand) 100%);
 }
+
+/* ---------- Gift reveal interaction ---------- */
+.gift-reveal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 36px;
+}
+
+.gift-box {
+  background: transparent;
+  border: 0;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: var(--ink);
+}
+.gift-box:focus-visible { outline: 2px solid var(--rose-soft); outline-offset: 8px; border-radius: 8px; }
+.gift-box-svg {
+  width: 160px;
+  height: 180px;
+  overflow: visible;
+}
+.gift-box-svg .gb-shadow { fill: #000; opacity: .14; transition: opacity .5s var(--ease); }
+.gift-box-svg g { transform-box: fill-box; transform-origin: center bottom; }
+.gift-box-svg .gb-body { transition: transform .6s var(--ease); }
+.gift-box-svg .gb-lid { transform-origin: center center; transition: transform .6s var(--ease) .05s, opacity .5s var(--ease) .05s; }
+.gift-box-svg .gb-bow { transition: transform .7s var(--ease), opacity .4s var(--ease); }
+.gift-box-svg .gb-sparkles { opacity: 0; }
+
+/* Idle bob */
+.gift-box:not(.opened) .gift-box-svg { animation: giftBob 3.6s ease-in-out infinite; }
+.gift-box:hover:not(.opened) .gb-bow { transform: rotate(-4deg); }
+
+/* Open state */
+.gift-box.opened .gift-box-svg { animation: none; }
+.gift-box.opened .gb-lid { transform: translateY(-56px) rotate(-14deg); opacity: 0; }
+.gift-box.opened .gb-bow { transform: translateY(-80px) rotate(22deg) scale(.6); opacity: 0; }
+.gift-box.opened .gb-body { transform: translateY(4px) scaleY(.92); }
+.gift-box.opened .gb-shadow { opacity: .22; }
+.gift-box.opened .gb-sparkles { animation: sparkleBurst .9s var(--ease) forwards; }
+
+.gift-box.opened .gb-spark { animation: sparkFly .9s var(--ease) forwards; }
+.gift-box.opened .gb-spark.s1 { --tx: -45px; --ty: -40px; animation-delay: .05s; }
+.gift-box.opened .gb-spark.s2 { --tx:  38px; --ty: -46px; animation-delay: .02s; }
+.gift-box.opened .gb-spark.s3 { --tx: -58px; --ty:   6px; animation-delay: .10s; }
+.gift-box.opened .gb-spark.s4 { --tx:  54px; --ty:  10px; animation-delay: .08s; }
+.gift-box.opened .gb-spark.s5 { --tx: -20px; --ty: -62px; animation-delay: .14s; }
+.gift-box.opened .gb-spark.s6 { --tx:  22px; --ty: -58px; animation-delay: .12s; }
+
+@keyframes giftBob {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50% { transform: translateY(-4px) rotate(-1.2deg); }
+}
+@keyframes sparkleBurst {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+@keyframes sparkFly {
+  0%   { transform: translate(0, 0) scale(.4); opacity: 0; }
+  25%  { opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(1); opacity: 0; }
+}
+
+.gift-box-hint {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--sage-700);
+  letter-spacing: .5px;
+  transition: color .3s ease, opacity .25s ease;
+  opacity: .9;
+}
+.gift-box:hover .gift-box-hint { color: var(--sage-900); opacity: 1; }
+
+/* ---------- Gift grid (reveals after unwrap) ---------- */
 .gift-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 28px;
+  gap: 20px;
+  width: 100%;
 }
+
+/* ---------- Gift modal (native <dialog>) ---------- */
+.gift-modal {
+  border: 0;
+  padding: 40px 32px 32px;
+  background: var(--cream);
+  color: var(--ink);
+  border-radius: 10px;
+  max-width: 640px;
+  width: calc(100% - 32px);
+  max-height: calc(100dvh - 48px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  overflow: visible;
+  opacity: 0;
+  transform: translateY(14px) scale(.98);
+  transition:
+    opacity .3s var(--ease),
+    transform .3s var(--ease),
+    overlay .3s var(--ease) allow-discrete,
+    display .3s var(--ease) allow-discrete;
+}
+.gift-modal::backdrop {
+  background: rgba(74, 90, 63, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transition:
+    opacity .3s var(--ease),
+    overlay .3s var(--ease) allow-discrete,
+    display .3s var(--ease) allow-discrete;
+}
+.gift-modal[open] { opacity: 1; transform: translateY(0) scale(1); }
+.gift-modal[open]::backdrop { opacity: 1; }
+@starting-style {
+  .gift-modal[open] { opacity: 0; transform: translateY(14px) scale(.98); }
+  .gift-modal[open]::backdrop { opacity: 0; }
+}
+
+.gift-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--ink-soft);
+  transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+.gift-modal-close:hover,
+.gift-modal-close:focus-visible { background: rgba(74, 90, 63, 0.08); color: var(--sage-900); }
+.gift-modal-close:focus-visible { outline: 2px solid var(--rose-soft); outline-offset: 2px; }
+.gift-modal-close svg { width: 18px; height: 18px; }
+
+.gift-modal-eyebrow {
+  font-family: var(--font-script);
+  font-size: 22px;
+  color: var(--sage-700);
+  text-align: center;
+  margin-bottom: 2px;
+}
+.gift-modal-title {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-style: italic;
+  text-align: center;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+
 .gift-card {
   position: relative;
-  padding: 48px 32px 32px;
+  padding: 36px 18px 22px;
   background: var(--cream);
   border-radius: var(--radius);
   text-align: center;
@@ -1073,29 +1224,37 @@ section { position: relative; padding: 120px 0; }
 }
 .gift-ribbon {
   position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
-  padding: 6px 20px;
+  padding: 6px 18px;
   background: var(--sage-700);
   color: var(--cream);
   font-size: 11px;
   letter-spacing: 2px;
   text-transform: uppercase;
   border-radius: 50px;
+  white-space: nowrap;
 }
 .gift-card h3 {
-  font-size: 26px;
+  font-size: 20px;
   font-style: italic;
-  margin-bottom: 24px;
+  margin: 14px 0 4px;
   color: var(--ink);
+  line-height: 1.25;
 }
-.bank-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 12px 0;
-  border-bottom: 1px dashed var(--line);
-  font-size: 14px;
-  text-align: left;
+.gift-card .bank-name {
+  font-size: 12px;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
 }
-.bank-row span { color: var(--muted); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
-.bank-row b { color: var(--ink); font-weight: 500; }
+.gift-card .account {
+  font-size: 15px;
+  color: var(--ink);
+  font-weight: 500;
+  letter-spacing: .5px;
+  justify-content: center;
+  transform-origin: center;
+}
 .copyable {
   display: inline-flex; align-items: center; gap: 8px;
   cursor: pointer;
@@ -1138,6 +1297,11 @@ section { position: relative; padding: 120px 0; }
   .copyable.copied { animation: none; }
   .copyable.copied svg { transform: none; opacity: .6; }
   .copyable.copied::after { animation: none; }
+  .gift-box:not(.opened) .gift-box-svg { animation: none; }
+  .gift-box-svg .gb-body,
+  .gift-box-svg .gb-lid,
+  .gift-box-svg .gb-bow { transition: none; }
+  .gift-box.opened .gb-spark { animation: none; opacity: 0; }
 }
 
 .qr-box {
@@ -1162,6 +1326,14 @@ section { position: relative; padding: 120px 0; }
   height: 100%;
   object-fit: contain;
   image-rendering: pixelated;
+}
+.qr-image--card {
+  width: 100%;
+  max-width: 180px;
+  aspect-ratio: 1;
+  height: auto;
+  padding: 6px;
+  margin: 0 auto;
 }
 .qr-box p { font-size: 12px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
 
@@ -1355,7 +1527,18 @@ section { position: relative; padding: 120px 0; }
   .map-overlay-link span { font-size: 13px; gap: 8px; }
   .map-overlay-link svg { width: 16px; height: 16px; flex-basis: 16px; }
 
-  .gift-grid { grid-template-columns: 1fr; }
+  .gift-grid { gap: 10px; max-width: none; }
+  .gift-card { padding: 28px 8px 14px; }
+  .gift-card h3 { font-size: 15px; margin: 8px 0 2px; }
+  .gift-card .bank-name { font-size: 10px; letter-spacing: 1.2px; margin-bottom: 4px; }
+  .gift-card .account { font-size: 12px; }
+  .gift-ribbon { font-size: 10px; padding: 4px 10px; letter-spacing: 1.3px; }
+  .qr-image--card { max-width: 140px; padding: 4px; }
+
+  .gift-modal { padding: 36px 16px 20px; width: calc(100% - 16px); }
+  .gift-modal-title { font-size: 24px; margin-bottom: 20px; }
+  .gift-modal-eyebrow { font-size: 18px; }
+  .gift-modal-close { top: 10px; right: 10px; }
 
   .music-toggle { bottom: 16px; right: 16px; width: 46px; height: 46px; }
   .copy-toast { bottom: 76px; right: 16px; }

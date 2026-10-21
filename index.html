@@ -119,8 +119,8 @@
         </span>
       </div>
       <p class="hero-sub fade-up" style="--d:.5s">
-        Trân trọng kính mời quý khách đến chung vui<br/>
-        trong ngày trọng đại của chúng tôi
+        Trân trọng kính mời quý thân bằng quyến thuộc<br/> 
+        đến chung vui trong ngày trọng đại của chúng mình
       </p>
       <a href="#story" class="hero-cta fade-up" style="--d:.6s">
         <span>Khám phá câu chuyện</span>
@@ -243,7 +243,7 @@
     <div class="container">
       <div class="section-head light">
         <p class="eyebrow">— Sự kiện —</p>
-        <h2 class="section-title">Lễ cưới của chúng tôi</h2>
+        <h2 class="section-title">Lễ cưới của chúng mình</h2>
         <svg class="divider" viewBox="0 0 120 20" aria-hidden="true">
           <path d="M0 10 H45" stroke="currentColor" stroke-width="1"/>
           <circle cx="60" cy="10" r="3" stroke="currentColor" fill="none"/>
@@ -408,13 +408,13 @@
     <div class="container narrow">
       <div class="section-head">
         <p class="eyebrow">— Xác nhận tham dự —</p>
-        <h2 class="section-title">Chúng tôi mong gặp bạn</h2>
+        <h2 class="section-title">Chúng mình mong gặp bạn</h2>
         <svg class="divider" viewBox="0 0 120 20" aria-hidden="true">
           <path d="M0 10 H45" stroke="currentColor" stroke-width="1"/>
           <circle cx="60" cy="10" r="3" stroke="currentColor" fill="none"/>
           <path d="M75 10 H120" stroke="currentColor" stroke-width="1"/>
         </svg>
-        <p class="section-sub">Vui lòng xác nhận trước ngày <b>15/11/2026</b> để chúng tôi tiện chuẩn bị chỗ ngồi chu đáo cho bạn.</p>
+        <p class="section-sub">Vui lòng xác nhận trước ngày <b>15/11/2026</b> để chúng mình tiện chuẩn bị thật chu đáo nhé.</p>
       </div>
 
       <form class="rsvp-form reveal" id="rsvpForm">
@@ -490,49 +490,78 @@
         <p class="section-sub">Sự hiện diện của bạn chính là món quà quý giá nhất.</p>
       </div>
 
-      <div class="gift-grid">
-        <div class="gift-card reveal">
-          <div class="gift-ribbon">Chú rể</div>
-          <h3>Võ Tường Duy</h3>
-          <div class="bank-row">
-            <span>Ngân hàng</span><b>Vietcombank</b>
-          </div>
-          <div class="bank-row">
-            <span>Số tài khoản</span>
-            <b class="copyable" data-copy="0123456789">9397974403 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></b>
-          </div>
-          <div class="bank-row">
-            <span>Chủ tài khoản</span><b>VO TUONG DUY</b>
-          </div>
-          <div class="qr-box">
-            <div class="qr-image">
-              <img src="assets/images/qr-duy.png" alt="Mã QR chuyển khoản Vietcombank — Võ Tường Duy" loading="lazy" />
-            </div>
-            <p>Quét mã QR để chuyển khoản</p>
-          </div>
-        </div>
-
-        <div class="gift-card reveal" style="--d:.1s">
-          <div class="gift-ribbon">Cô dâu</div>
-          <h3>Nguyễn Thị Như Ngọc</h3>
-          <div class="bank-row">
-            <span>Ngân hàng</span><b>Techcombank</b>
-          </div>
-          <div class="bank-row">
-            <span>Số tài khoản</span>
-            <b class="copyable" data-copy="9876543210">0721000667498 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></b>
-          </div>
-          <div class="bank-row">
-            <span>Chủ tài khoản</span><b>NGUYEN THI NHU NGOC</b>
-          </div>
-          <div class="qr-box">
-            <div class="qr-image">
-              <img src="assets/images/qr-ngoc.png" alt="Mã QR chuyển khoản Vietcombank — Nguyễn Thị Như Ngọc" loading="lazy" />
-            </div>
-            <p>Quét mã QR để chuyển khoản</p>
-          </div>
-        </div>
+      <div class="gift-reveal" id="giftReveal">
+        <button class="gift-box" id="giftBoxToggle" type="button" aria-expanded="false" aria-controls="giftContents">
+          <svg class="gift-box-svg" viewBox="0 0 160 180" aria-hidden="true">
+            <ellipse class="gb-shadow" cx="80" cy="162" rx="54" ry="4"/>
+            <!-- Box body with vertical ribbon -->
+            <g class="gb-body">
+              <rect x="28" y="78" width="104" height="78" rx="2" fill="#f3ead9" stroke="#8a7f6c" stroke-width="1"/>
+              <rect x="72" y="78" width="16" height="78" fill="#c99a9a"/>
+            </g>
+            <!-- Lid with horizontal ribbon -->
+            <g class="gb-lid">
+              <rect x="22" y="66" width="116" height="20" rx="2" fill="#faf6f0" stroke="#8a7f6c" stroke-width="1"/>
+              <rect x="72" y="66" width="16" height="20" fill="#c99a9a"/>
+            </g>
+            <!-- Bow -->
+            <g class="gb-bow">
+              <ellipse cx="62" cy="52" rx="14" ry="10" fill="#c99a9a" transform="rotate(-18 62 52)"/>
+              <ellipse cx="98" cy="52" rx="14" ry="10" fill="#c99a9a" transform="rotate(18 98 52)"/>
+              <ellipse cx="62" cy="52" rx="6" ry="4" fill="#a07878" transform="rotate(-18 62 52)" opacity=".55"/>
+              <ellipse cx="98" cy="52" rx="6" ry="4" fill="#a07878" transform="rotate(18 98 52)" opacity=".55"/>
+              <circle cx="80" cy="58" r="6" fill="#a07878"/>
+              <path d="M78 64 Q 72 76, 74 86" stroke="#c99a9a" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M82 64 Q 88 76, 86 86" stroke="#c99a9a" stroke-width="3" fill="none" stroke-linecap="round"/>
+            </g>
+            <!-- Sparkles emitted on open -->
+            <g class="gb-sparkles">
+              <circle class="gb-spark s1" cx="80" cy="60" r="2" fill="#c08b6a"/>
+              <circle class="gb-spark s2" cx="80" cy="60" r="1.5" fill="#e8cdcb"/>
+              <circle class="gb-spark s3" cx="80" cy="60" r="2.5" fill="#8b9d83"/>
+              <circle class="gb-spark s4" cx="80" cy="60" r="1.8" fill="#c99a9a"/>
+              <circle class="gb-spark s5" cx="80" cy="60" r="1.6" fill="#c08b6a"/>
+              <circle class="gb-spark s6" cx="80" cy="60" r="2" fill="#8b9d83"/>
+            </g>
+          </svg>
+          <span class="gift-box-hint">Nhấn để mở hộp quà</span>
+        </button>
       </div>
+
+      <!-- Gift modal -->
+      <dialog class="gift-modal" id="giftModal" aria-labelledby="giftModalTitle">
+        <button type="button" class="gift-modal-close" aria-label="Đóng" data-close>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+            <path d="M6 6l12 12M18 6L6 18"/>
+          </svg>
+        </button>
+
+        <p class="gift-modal-eyebrow">— Mừng cưới —</p>
+        <h3 id="giftModalTitle" class="gift-modal-title">Gửi đến cô dâu & chú rễ</h3>
+
+        <div class="gift-grid" id="giftContents">
+            <div class="gift-card">
+              <div class="gift-ribbon">Chú rể</div>
+              <div class="qr-image qr-image--card">
+                <img src="assets/images/qr-duy.png" alt="Mã QR chuyển khoản Vietcombank — Võ Tường Duy" loading="lazy" />
+              </div>
+              <h3>Võ Tường Duy</h3>
+              <p class="bank-name">Vietcombank</p>
+              <b class="copyable account" data-copy="9397974403">9397974403 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></b>
+            </div>
+
+            <div class="gift-card">
+              <div class="gift-ribbon">Cô dâu</div>
+              <div class="qr-image qr-image--card">
+                <img src="assets/images/qr-ngoc.png" alt="Mã QR chuyển khoản Vietcombank — Nguyễn Thị Như Ngọc" loading="lazy" />
+              </div>
+              <h3>Nguyễn Thị Như Ngọc</h3>
+              <p class="bank-name">Vietcombank</p>
+              <b class="copyable account" data-copy="0721000667498">0721000667498 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></b>
+            </div>
+          </div>
+          <p class="thanks">Cảm ơn tấm lòng của bạn ♡</p>
+        </dialog>
     </div>
   </section>
 

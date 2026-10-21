@@ -145,6 +145,39 @@ document.querySelectorAll(".copyable").forEach((el) => {
   });
 });
 
+// ---------- Gift box → modal ----------
+(() => {
+  const btn = document.getElementById("giftBoxToggle");
+  const modal = document.getElementById("giftModal");
+  if (!btn || !modal) return;
+
+  const openModal = () => {
+    btn.classList.add("opened");
+    btn.setAttribute("aria-expanded", "true");
+    if (typeof modal.showModal === "function") modal.showModal();
+    else modal.setAttribute("open", "");
+  };
+  const closeModal = () => {
+    if (typeof modal.close === "function") modal.close();
+    else modal.removeAttribute("open");
+  };
+
+  btn.addEventListener("click", openModal);
+
+  // Close via [data-close] (× button or backdrop)
+  modal.addEventListener("click", (e) => {
+    if (e.target.closest("[data-close]")) { closeModal(); return; }
+    // Backdrop click (clicking the dialog element itself, outside the content box)
+    if (e.target === modal) closeModal();
+  });
+
+  // Reset gift-box state whenever the dialog closes (×, Esc, backdrop)
+  modal.addEventListener("close", () => {
+    btn.classList.remove("opened");
+    btn.setAttribute("aria-expanded", "false");
+  });
+})();
+
 // ---------- RSVP form ----------
 const form = document.getElementById("rsvpForm");
 const formSuccess = document.getElementById("formSuccess");
