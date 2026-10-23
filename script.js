@@ -228,6 +228,18 @@ form?.addEventListener("submit", (e) => {
   const audio = document.getElementById("bgMusic");
   if (!musicBtn || !audio) return;
 
+  let userPaused = false;
+  const START_AT = 24 * 60 + 35; // 24:35
+  let seeded = false;
+  const seedStart = () => {
+    if (seeded) return;
+    if (!Number.isFinite(audio.duration) || audio.duration <= START_AT) return;
+    audio.currentTime = START_AT;
+    seeded = true;
+  };
+  if (audio.readyState >= 1) seedStart();
+  else audio.addEventListener("loadedmetadata", seedStart, { once: true });
+
   const syncState = () => {
     musicBtn.classList.toggle("playing", !audio.paused);
     musicBtn.setAttribute(
@@ -239,8 +251,22 @@ form?.addEventListener("submit", (e) => {
   audio.addEventListener("pause", syncState);
 
   musicBtn.addEventListener("click", () => {
-    if (audio.paused) audio.play().catch(() => {});
-    else audio.pause();
+    if (audio.paused) {
+      userPaused = false;
+      audio.play().catch(() => {});
+    } else {
+      userPaused = true;
+      audio.pause();
+    }
+  });
+
+  // Pause when the tab is hidden; resume on return unless the user paused it.
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      if (!audio.paused) audio.pause();
+    } else if (!userPaused) {
+      audio.play().catch(() => {});
+    }
   });
 
   // Browsers block autoplay — attempt it, then fall back to starting
