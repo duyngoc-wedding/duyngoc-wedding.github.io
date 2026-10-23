@@ -2,10 +2,11 @@
 // Wedding invite — Tường Duy & Như Ngọc
 // ============================================================
 
-const WEDDING_DATE = new Date("2026-11-29T18:00:00+07:00");
-
-// 29/11/2026 18:00–21:00 Asia/Ho_Chi_Minh → UTC 11:00–14:00
-const CALENDAR_EVENT = {
+// Dynamic config — overwritten by data/<side>.json after fetch. The initial
+// values are a safe fallback (groom's event) so the page still renders if the
+// JSON fails to load.
+let WEDDING_DATE = new Date("2026-11-29T18:00:00+07:00");
+let CALENDAR_EVENT = {
   title: "Tiệc cưới Tường Duy ❤ Như Ngọc",
   startUtc: "20261129T110000Z",
   endUtc:   "20261129T140000Z",
@@ -13,6 +14,104 @@ const CALENDAR_EVENT = {
   mapsUrl:  "https://maps.app.goo.gl/ytBXpzy8v4EaYTEY6",
   details:  "Trân trọng kính mời quý khách đến chung vui trong ngày cưới của Tường Duy & Như Ngọc.",
 };
+
+// ---------- Data: load per-side JSON and apply to DOM ----------
+(() => {
+  const get = (obj, path) => path.split(".").reduce((o, k) => (o == null ? o : o[k]), obj);
+
+  const applyAttrSpec = (el, spec, data) => {
+    spec.split("|").forEach((pair) => {
+      const idx = pair.indexOf(":");
+      if (idx < 0) return;
+      const attr = pair.slice(0, idx).trim();
+      const path = pair.slice(idx + 1).trim();
+      const v = get(data, path);
+      if (v != null) el.setAttribute(attr, v);
+    });
+  };
+
+  const applyActiveCalendarDay = (data) => {
+    const target = String(get(data, "date.day") ?? "").trim();
+    if (!target) return;
+    const cells = document.querySelectorAll(".cal-day");
+    const current = document.querySelector(".cal-day.active");
+    let heartHtml = "";
+    if (current) {
+      const heart = current.querySelector(".cal-heart");
+      if (heart) heartHtml = heart.outerHTML;
+    }
+    cells.forEach((cell) => {
+      const label = cell.textContent.replaceAll(/\s+/g, "").trim();
+      if (label === target) {
+        cell.classList.add("active");
+        const monthNum = (get(data, "date.monthShort") || "").match(/\d+/)?.[0] || "";
+        const year = get(data, "date.year") || "";
+        cell.setAttribute("aria-label", `Ngày cưới ${target} tháng ${monthNum} năm ${year}`);
+        if (!cell.querySelector(".cal-heart") && heartHtml) {
+          cell.insertAdjacentHTML("afterbegin", heartHtml);
+        }
+      } else if (cell.classList.contains("active")) {
+        cell.classList.remove("active");
+        const h = cell.querySelector(".cal-heart");
+        if (h) h.remove();
+      }
+    });
+  };
+
+  const applyRestaurantNameModifier = (data) => {
+    const el = document.getElementById("restaurantName");
+    if (!el) return;
+    const mod = get(data, "venue.nameModifier") || "";
+    // Strip any previously-applied modifier (anything starting with restaurant-name--).
+    el.classList.forEach((c) => {
+      if (c.startsWith("restaurant-name--")) el.classList.remove(c);
+    });
+    if (mod) mod.split(/\s+/).filter(Boolean).forEach((c) => el.classList.add(c));
+  };
+
+  const apply = (data) => {
+    document.querySelectorAll("[data-f]").forEach((el) => {
+      const v = get(data, el.dataset.f);
+      if (v != null) el.textContent = v;
+    });
+    document.querySelectorAll("[data-fh]").forEach((el) => {
+      const v = get(data, el.dataset.fh);
+      if (v != null) el.innerHTML = v;
+    });
+    document.querySelectorAll("[data-fa]").forEach((el) => {
+      applyAttrSpec(el, el.dataset.fa, data);
+    });
+
+    applyActiveCalendarDay(data);
+    applyRestaurantNameModifier(data);
+
+    const coupleGrid = document.getElementById("coupleGrid");
+    if (coupleGrid) coupleGrid.classList.toggle("couple-grid--reverse", data.side === "bride");
+
+    if (data.date?.iso) WEDDING_DATE = new Date(data.date.iso);
+    if (data.calendar) {
+      CALENDAR_EVENT = {
+        title:    data.calendar.title    ?? CALENDAR_EVENT.title,
+        startUtc: data.calendar.startUtc ?? CALENDAR_EVENT.startUtc,
+        endUtc:   data.calendar.endUtc   ?? CALENDAR_EVENT.endUtc,
+        location: data.calendar.location ?? CALENDAR_EVENT.location,
+        mapsUrl:  data.venue?.mapsUrl    ?? CALENDAR_EVENT.mapsUrl,
+        details:  data.calendar.details  ?? CALENDAR_EVENT.details,
+      };
+      refreshCalendarHref();
+    }
+  };
+
+  fetch("side.txt", { cache: "no-cache" })
+    .then((r) => r.ok ? r.text() : Promise.reject(new Error(`side.txt HTTP ${r.status}`)))
+    .then((text) => {
+      const side = text.trim().toLowerCase().startsWith("b") ? "bride" : "groom";
+      return fetch(`data/${side}.json`, { cache: "no-cache" });
+    })
+    .then((r) => r.ok ? r.json() : Promise.reject(new Error(`JSON HTTP ${r.status}`)))
+    .then(apply)
+    .catch((e) => console.warn("Config load failed", e));
+})();
 
 // ---------- Loader ----------
 window.addEventListener("load", () => {
@@ -281,7 +380,7 @@ form?.addEventListener("submit", (e) => {
 })();
 
 // ---------- Add to Google Calendar ----------
-(() => {
+function refreshCalendarHref() {
   const btn = document.getElementById("addToCalendar");
   if (!btn) return;
   const details = `${CALENDAR_EVENT.details}\n\nBản đồ: ${CALENDAR_EVENT.mapsUrl}`;
@@ -294,7 +393,8 @@ form?.addEventListener("submit", (e) => {
     ctz:      "Asia/Ho_Chi_Minh",
   });
   btn.href = `https://calendar.google.com/calendar/render?${params.toString()}`;
-})();
+}
+refreshCalendarHref();
 
 // ---------- Smooth scroll offset for fixed nav ----------
 document.querySelectorAll('a[href^="#"]').forEach((a) => {

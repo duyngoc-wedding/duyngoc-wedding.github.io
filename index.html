@@ -4,22 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#8B9D83" />
-  <title>Duy & Ngọc | Wedding Invitaion</title>
-  <meta name="description" content="Trân trọng kính mời thân bằng quyến thuộc đến chung vui trong ngày trọng đại của chúng mình." />
+  <title data-f="pageTitle">Duy & Ngọc | Wedding Invitation</title>
+  <meta name="description" content="Trân trọng kính mời thân bằng quyến thuộc đến chung vui trong ngày trọng đại của chúng mình." data-fa="content:description" />
 
   <!-- Open Graph / Social share preview -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Duy & Ngọc — Wedding" />
+  <meta property="og:site_name" content="Duy & Ngọc — Wedding" data-fa="content:siteName" />
   <meta property="og:locale" content="vi_VN" />
-  <meta property="og:title" content="Tường Duy & Như Ngọc · 29.11.2026" />
-  <meta property="og:description" content="Trân trọng kính mời thân bằng quyến thuộc đến chung vui trong ngày trọng đại của chúng mình." />
+  <meta property="og:title" content="Tường Duy & Như Ngọc · 29.11.2026" data-fa="content:ogTitle" />
+  <meta property="og:description" content="Trân trọng kính mời thân bằng quyến thuộc đến chung vui trong ngày trọng đại của chúng mình." data-fa="content:description" />
   <meta property="og:image" content="assets/images/og-cover.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Thiệp cưới Tường Duy & Như Ngọc — 29 tháng 11, 2026" />
+  <meta property="og:image:alt" content="Thiệp cưới Tường Duy & Như Ngọc — 29 tháng 11, 2026" data-fa="content:ogImageAlt" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Tường Duy & Như Ngọc · 29.11.2026" />
-  <meta name="twitter:description" content="Trân trọng kính mời thân bằng quyến thuộc đến chung vui trong ngày trọng đại của chúng mình." />
+  <meta name="twitter:title" content="Tường Duy & Như Ngọc · 29.11.2026" data-fa="content:ogTitle" />
+  <meta name="twitter:description" content="Trân trọng kính mời thân bằng quyến thuộc đến chung vui trong ngày trọng đại của chúng mình." data-fa="content:description" />
   <meta name="twitter:image" content="assets/images/og-cover.jpg" />
 
   <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml" />
@@ -67,14 +67,14 @@
         <path d="M30 5C30 5 12 15 12 32C12 45 20 55 30 55C40 55 48 45 48 32C48 15 30 5 30 5Z" stroke="currentColor" stroke-width="1.2"/>
         <path d="M30 10V55M30 22L22 28M30 32L22 38M30 22L38 28M30 32L38 38" stroke="currentColor" stroke-width="1"/>
       </svg>
-      <p>D <span class="amp">&amp;</span> N</p>
+      <p data-fh="initialsHtml">D <span class="amp">&amp;</span> N</p>
     </div>
   </div>
 
   <!-- Navigation -->
   <nav class="nav" id="nav">
     <a href="#home" class="nav-brand">
-      <span class="brand-ampersand">D <span class="amp">&amp;</span> N</span>
+      <span class="brand-ampersand" data-fh="initialsHtml">D <span class="amp">&amp;</span> N</span>
     </a>
     <button class="nav-toggle" id="navToggle" aria-label="Mở menu">
       <span></span><span></span><span></span>
@@ -127,19 +127,19 @@
     <div class="hero-inner">
       <p class="hero-eyebrow fade-up">— Save the date —</p>
       <h1 class="hero-title">
-        <span class="hero-name fade-up" style="--d:.1s">Tường&nbsp;Duy</span>
+        <span class="hero-name fade-up" style="--d:.1s" data-fh="names.firstNbsp">Tường&nbsp;Duy</span>
         <span class="hero-amp fade-up" style="--d:.2s">&amp;</span>
-        <span class="hero-name fade-up" style="--d:.3s">Như&nbsp;Ngọc</span>
+        <span class="hero-name fade-up" style="--d:.3s" data-fh="names.secondNbsp">Như&nbsp;Ngọc</span>
       </h1>
       <div class="hero-date fade-up" style="--d:.4s">
         <span class="date-side">
-          <span class="date-day">Chủ Nhật</span>
-          <span class="date-month">Tháng 11</span>
+          <span class="date-day" data-f="date.dayOfWeek">Chủ Nhật</span>
+          <span class="date-month" data-f="date.monthShort">Tháng 11</span>
         </span>
-        <span class="date-big">29</span>
+        <span class="date-big" data-f="date.day">29</span>
         <span class="date-side">
-          <span class="date-day">2026</span>
-          <span class="date-month">18:00</span>
+          <span class="date-day" data-f="date.year">2026</span>
+          <span class="date-month" data-f="date.time">18:00</span>
         </span>
       </div>
       <p class="hero-sub fade-up" style="--d:.5s">
@@ -238,7 +238,7 @@
         </svg>
       </div>
 
-      <div class="couple-grid">
+      <div class="couple-grid" id="coupleGrid">
         <div class="person reveal">
           <div class="person-photo groom-photo"></div>
           <p class="person-role">Chú rể</p>
@@ -278,8 +278,8 @@
       <div class="calendar-wrap reveal">
         <div class="calendar">
           <div class="calendar-head">
-            <span class="cal-month">Tháng Mười Một</span>
-            <span class="cal-year">2026</span>
+            <span class="cal-month" data-f="date.monthLong">Tháng Mười Một</span>
+            <span class="cal-year" data-f="date.year">2026</span>
           </div>
           <div class="calendar-grid">
             <div class="cal-dow">CN</div>
@@ -338,20 +338,20 @@
 
       <div class="restaurant-event reveal">
         <div class="restaurant-info">
-          <p class="restaurant-tag">— Tiệc cưới —</p>
-          <h3 class="restaurant-name">Queen Plaza<br/><em>Tân Bình</em></h3>
+          <p class="restaurant-tag">— <span data-f="venue.tag">Tiệc cưới</span> —</p>
+          <h3 class="restaurant-name" id="restaurantName" data-fh="venue.nameHtml">Queen Plaza<br/><em>Tân Bình</em></h3>
 
           <div class="restaurant-when">
             <div class="rwhen-col">
               <span class="rwhen-label">Thời gian</span>
-              <strong class="rwhen-value">18:00</strong>
-              <span class="rwhen-sub">Chủ Nhật</span>
+              <strong class="rwhen-value" data-f="date.time">18:00</strong>
+              <span class="rwhen-sub" data-f="date.dayOfWeek">Chủ Nhật</span>
             </div>
             <div class="rwhen-sep" aria-hidden="true"></div>
             <div class="rwhen-col">
               <span class="rwhen-label">Ngày</span>
-              <strong class="rwhen-value">29 · 11</strong>
-              <span class="rwhen-sub">2026</span>
+              <strong class="rwhen-value" data-f="date.dayDotMonth">29 · 11</strong>
+              <span class="rwhen-sub" data-f="date.year">2026</span>
             </div>
           </div>
 
@@ -360,10 +360,10 @@
               <path d="M12 22s-7-7-7-13a7 7 0 1114 0c0 6-7 13-7 13z"/>
               <circle cx="12" cy="9" r="2.5"/>
             </svg>
-            <span>91B2 Phạm Văn Hai, P. Tân Sơn Hòa,<br/>TP. Hồ Chí Minh</span>
+            <span data-fh="venue.addressHtml">91B2 Phạm Văn Hai, P. Tân Sơn Hòa,<br/>TP. Hồ Chí Minh</span>
           </p>
 
-          <a class="restaurant-direction" href="https://maps.app.goo.gl/ytBXpzy8v4EaYTEY6" target="_blank" rel="noopener">Chỉ đường bằng Google Maps →</a>
+          <a class="restaurant-direction" href="https://maps.app.goo.gl/ytBXpzy8v4EaYTEY6" target="_blank" rel="noopener" data-fa="href:venue.mapsUrl">Chỉ đường bằng Google Maps →</a>
         </div>
 
         <div class="restaurant-map">
@@ -371,17 +371,19 @@
             src="https://maps.google.com/maps?q=Queen+Plaza+T%C3%A2n+B%C3%ACnh+91B2+Ph%E1%BA%A1m+V%C4%83n+Hai&z=17&hl=vi&output=embed"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
-            title="Bản đồ Queen Plaza Tân Bình"></iframe>
+            title="Bản đồ Queen Plaza Tân Bình"
+            data-fa="src:venue.mapEmbed|title:venue.mapTitle"></iframe>
           <a class="map-overlay-link"
              href="https://maps.app.goo.gl/ytBXpzy8v4EaYTEY6"
              target="_blank" rel="noopener"
-             aria-label="Mở Google Maps đến Queen Plaza Tân Bình">
+             aria-label="Mở Google Maps đến Queen Plaza Tân Bình"
+             data-fa="href:venue.mapsUrl|aria-label:venue.mapAria">
             <span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                 <path d="M12 22s-7-7-7-13a7 7 0 1114 0c0 6-7 13-7 13z"/>
                 <circle cx="12" cy="9" r="2.5"/>
               </svg>
-              Queen Plaza Tân Bình
+              <span data-f="venue.namePlain">Queen Plaza Tân Bình</span>
             </span>
           </a>
         </div>
@@ -520,7 +522,7 @@
           <div class="giftbox-glow"></div>
           <div class="giftbox-card"></div>
           <div class="giftbox-shadow"></div>
-          <div class="giftbox-body"><span class="giftbox-strap"></span><span class="giftbox-tag">D & N</span></div>
+          <div class="giftbox-body"><span class="giftbox-strap"></span><span class="giftbox-tag" data-f="giftboxTag">D & N</span></div>
           <div class="giftbox-lid">
             <span class="giftbox-strap"></span>
             <svg class="giftbox-bow" viewBox="0 0 124 78" aria-hidden="true">
@@ -600,11 +602,11 @@
         Mong được gặp bạn trong ngày đặc biệt sắp tới!
       </p>
       <div class="footer-names">
-        <span>Tường Duy</span>
+        <span data-f="names.first">Tường Duy</span>
         <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1"><path d="M20 32s-12-7-12-17a6 6 0 0112-2 6 6 0 0112 2c0 10-12 17-12 17z"/></svg>
-        <span>Như Ngọc</span>
+        <span data-f="names.second">Như Ngọc</span>
       </div>
-      <p class="footer-date">29 · 11 · 2026</p>
+      <p class="footer-date" data-f="date.fullDotted">29 · 11 · 2026</p>
 
       <p class="footer-credit">
         <!-- Thiệp cưới điện tử · Thiết kế với 🤍 bởi đôi uyên ương -->

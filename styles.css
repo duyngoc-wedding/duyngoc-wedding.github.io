@@ -611,6 +611,9 @@ section { position: relative; padding: 120px 0; }
   max-width: 1000px;
   margin: 0 auto;
 }
+.couple-grid--reverse .person:nth-of-type(1) { order: 3; }
+.couple-grid--reverse .couple-heart { order: 2; }
+.couple-grid--reverse .person:nth-of-type(2) { order: 1; }
 .person {
   text-align: center;
 }
@@ -847,6 +850,17 @@ section { position: relative; padding: 120px 0; }
 .restaurant-name em {
   font-style: italic;
   color: var(--rose-soft);
+}
+.restaurant-name.restaurant-name--compact {
+  font-size: clamp(34px, 4vw, 52px);
+  letter-spacing: 0.5px;
+}
+.restaurant-name.restaurant-name--compact em {
+  display: inline-block;
+  margin-top: 6px;
+  font-size: 0.56em;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .restaurant-when {
