@@ -155,29 +155,115 @@ p { margin: 0; }
 
 /* ------------------------- MUSIC TOGGLE ------------------------- */
 .music-toggle {
-  position: fixed; bottom: 24px; right: 24px;
+  --music-btn-color: var(--sage-700);
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
   z-index: 90;
-  width: 52px; height: 52px;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 0;
+  outline: 0;
   border-radius: 50%;
-  background: var(--sage-700);
-  color: var(--cream);
-  display: grid; place-items: center;
-  box-shadow: var(--shadow-md);
-  transition: transform .3s ease, background .3s ease;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+  transition: all 150ms;
+  -webkit-tap-highlight-color: transparent;
 }
-.music-toggle:hover { transform: scale(1.08); background: var(--sage-900); }
-.music-toggle .icon-music { width: 20px; height: 20px; }
-.music-waves { position: absolute; display: none; gap: 2px; }
-.music-toggle.playing .icon-music { display: none; }
-.music-toggle.playing .music-waves { display: flex; }
-.music-waves i {
-  display: block; width: 3px; background: currentColor; border-radius: 2px;
-  animation: wave 1s ease-in-out infinite;
+.music-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
 }
-.music-waves i:nth-child(1) { height: 10px; animation-delay: 0s; }
-.music-waves i:nth-child(2) { height: 18px; animation-delay: .15s; }
-.music-waves i:nth-child(3) { height: 10px; animation-delay: .3s; }
-@keyframes wave { 0%, 100% { transform: scaleY(.5); } 50% { transform: scaleY(1); } }
+.music-toggle:active { transform: scale(0.95); }
+.music-toggle:focus-visible { outline: 2px solid var(--music-btn-color); outline-offset: 4px; }
+
+.music-disc,
+.music-ring,
+.music-gloss,
+.music-content { pointer-events: none; }
+
+.music-disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(
+    to bottom right,
+    color-mix(in srgb, var(--music-btn-color) 80%, transparent),
+    var(--music-btn-color),
+    color-mix(in srgb, var(--music-btn-color) 87%, transparent)
+  );
+  animation: spin-cd 3s linear infinite;
+  animation-play-state: paused;
+}
+.music-toggle.playing .music-disc { animation-play-state: running; }
+
+.music-ring {
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+}
+
+.music-gloss {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: linear-gradient(
+    to top right,
+    rgba(255, 255, 255, 0.3),
+    transparent 50%,
+    transparent
+  );
+}
+
+.music-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.music-note { display: block; width: 20px; height: 20px; }
+
+.music-eq {
+  display: none;
+  align-items: flex-end;
+  height: 16px;
+  gap: 2px;
+}
+.music-toggle.playing .music-note { display: none; }
+.music-toggle.playing .music-eq { display: flex; }
+
+.music-eq i {
+  display: block;
+  width: 4px;
+  background: #fff;
+  border-radius: 999px;
+  animation: dance 0.4s ease-in-out infinite;
+}
+.music-eq i:nth-child(1) { height: 60%; animation-delay: 0s; }
+.music-eq i:nth-child(2) { height: 100%; animation-delay: 0.1s; }
+.music-eq i:nth-child(3) { height: 40%; animation-delay: 0.2s; }
+.music-eq i:nth-child(4) { height: 80%; animation-delay: 0.3s; }
+
+@keyframes spin-cd {
+  from { transform: rotate(0); }
+  to { transform: rotate(360deg); }
+}
+@keyframes dance {
+  0%, 100% { height: 20%; }
+  50% { height: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .music-disc { animation: none; }
+  .music-eq i { animation: none; }
+}
 
 /* ------------------------- HERO ------------------------- */
 .hero {
@@ -1623,7 +1709,7 @@ section { position: relative; padding: 120px 0; }
   .gift-modal-close { top: 10px; right: 10px; }
   .gift-modal .thanks { font-size: 18px; margin-top: 20px; padding-top: 14px; }
 
-  .music-toggle { bottom: 16px; right: 16px; width: 46px; height: 46px; }
+  .music-toggle { bottom: 16px; right: 16px; }
   .copy-toast { bottom: 76px; right: 16px; }
 }
 

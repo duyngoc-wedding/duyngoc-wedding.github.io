@@ -5,7 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#8B9D83" />
   <title>Duy & Ngọc | Wedding Invitaion</title>
-  <meta name="description" content="Trân trọng kính mời quý khách đến chung vui trong ngày lễ thành hôn của Tường Duy & Như Ngọc." />
+  <meta name="description" content="Trân trọng kính mời thân bằng quyến thuộc đến chung vui trong ngày trọng đại của chúng mình." />
+
+  <!-- Open Graph / Social share preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Duy & Ngọc — Wedding" />
+  <meta property="og:locale" content="vi_VN" />
+  <meta property="og:title" content="Tường Duy & Như Ngọc · 29.11.2026" />
+  <meta property="og:description" content="Trân trọng kính mời thân bằng quyến thuộc đến chung vui trong ngày trọng đại của chúng mình." />
+  <meta property="og:image" content="assets/images/og-cover.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Thiệp cưới Tường Duy & Như Ngọc — 29 tháng 11, 2026" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Tường Duy & Như Ngọc · 29.11.2026" />
+  <meta name="twitter:description" content="Trân trọng kính mời thân bằng quyến thuộc đến chung vui trong ngày trọng đại của chúng mình." />
+  <meta name="twitter:image" content="assets/images/og-cover.jpg" />
 
   <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml" />
   <link rel="icon" href="assets/images/favicon-32.png" type="image/png" sizes="32x32" />
@@ -76,11 +91,16 @@
   </nav>
 
   <!-- Music toggle -->
-  <button class="music-toggle" id="musicToggle" aria-label="Bật/tắt nhạc">
-    <svg class="icon-music" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-      <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
-    </svg>
-    <span class="music-waves" aria-hidden="true"><i></i><i></i><i></i></span>
+  <button class="music-toggle playing" id="musicToggle" type="button" aria-label="Tạm dừng nhạc">
+    <span class="music-disc" aria-hidden="true"></span>
+    <span class="music-ring" aria-hidden="true"></span>
+    <span class="music-gloss" aria-hidden="true"></span>
+    <span class="music-content">
+      <svg class="music-note" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+      </svg>
+      <span class="music-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+    </span>
   </button>
 
   <!-- HERO -->
@@ -123,8 +143,8 @@
         </span>
       </div>
       <p class="hero-sub fade-up" style="--d:.5s">
-        Trân trọng kính mời quý thân bằng quyến thuộc<br/> 
-        đến chung vui trong ngày trọng đại của chúng mình
+        Trân trọng kính mời quý thân bằng quyến thuộc <br/>
+        đến chung vui trong ngày trọng đại của chúng mình.
       </p>
       <a href="#story" class="hero-cta fade-up" style="--d:.6s">
         <span>Khám phá câu chuyện</span>

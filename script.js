@@ -223,27 +223,42 @@ form?.addEventListener("submit", (e) => {
 });
 
 // ---------- Music ----------
-const musicBtn = document.getElementById("musicToggle");
-const audio = document.getElementById("bgMusic");
-let playing = false;
+(() => {
+  const musicBtn = document.getElementById("musicToggle");
+  const audio = document.getElementById("bgMusic");
+  if (!musicBtn || !audio) return;
 
-musicBtn.addEventListener("click", async () => {
-  if (!audio) return;
-  if (playing) {
-    audio.pause();
-    musicBtn.classList.remove("playing");
-    playing = false;
-  } else {
-    try {
-      await audio.play();
-      musicBtn.classList.add("playing");
-      playing = true;
-    } catch (err) {
-      console.warn("Audio play blocked:", err);
-      showToast("Không phát được nhạc — thiếu file audio");
-    }
-  }
-});
+  const syncState = () => {
+    musicBtn.classList.toggle("playing", !audio.paused);
+    musicBtn.setAttribute(
+      "aria-label",
+      audio.paused ? "Phát nhạc" : "Tạm dừng nhạc"
+    );
+  };
+  audio.addEventListener("play", syncState);
+  audio.addEventListener("pause", syncState);
+
+  musicBtn.addEventListener("click", () => {
+    if (audio.paused) audio.play().catch(() => {});
+    else audio.pause();
+  });
+
+  // Browsers block autoplay — attempt it, then fall back to starting
+  // playback on the user's first interaction anywhere on the page.
+  const startIfPaused = () => {
+    if (audio.paused) audio.play().catch(() => {});
+  };
+  audio.play().catch(() => {
+    const events = ["click", "touchstart", "scroll", "keydown"];
+    const onFirstInteract = () => {
+      startIfPaused();
+      events.forEach((ev) => window.removeEventListener(ev, onFirstInteract));
+    };
+    events.forEach((ev) =>
+      window.addEventListener(ev, onFirstInteract, { once: true, passive: true })
+    );
+  });
+})();
 
 // ---------- Add to Google Calendar ----------
 (() => {
