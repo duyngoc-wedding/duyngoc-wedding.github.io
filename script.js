@@ -229,16 +229,6 @@ form?.addEventListener("submit", (e) => {
   if (!musicBtn || !audio) return;
 
   let userPaused = false;
-  const START_AT = 24 * 60 + 35; // 24:35
-  let seeded = false;
-  const seedStart = () => {
-    if (seeded) return;
-    if (!Number.isFinite(audio.duration) || audio.duration <= START_AT) return;
-    audio.currentTime = START_AT;
-    seeded = true;
-  };
-  if (audio.readyState >= 1) seedStart();
-  else audio.addEventListener("loadedmetadata", seedStart, { once: true });
 
   const syncState = () => {
     musicBtn.classList.toggle("playing", !audio.paused);
@@ -269,21 +259,25 @@ form?.addEventListener("submit", (e) => {
     }
   });
 
-  // Browsers block autoplay — attempt it, then fall back to starting
-  // playback on the user's first interaction anywhere on the page.
-  const startIfPaused = () => {
-    if (audio.paused) audio.play().catch(() => {});
+  // Browsers allow muted autoplay but block audible autoplay. Start muted
+  // so the track is already running when the user first interacts, then
+  // unmute on that interaction.
+  audio.muted = true;
+  audio.play().catch(() => {});
+
+  // Use only `click`/`keydown` (not pointerdown/touchstart). Those pre-click
+  // events fire BEFORE the music button's own click handler, which would then
+  // see "already playing" and immediately pause what we just unmuted.
+  const events = ["click", "keydown"];
+  const onFirstInteract = () => {
+    userPaused = false;
+    audio.muted = false;
+    audio.play().catch(() => {});
+    events.forEach((ev) => globalThis.removeEventListener(ev, onFirstInteract));
   };
-  audio.play().catch(() => {
-    const events = ["click", "touchstart", "scroll", "keydown"];
-    const onFirstInteract = () => {
-      startIfPaused();
-      events.forEach((ev) => window.removeEventListener(ev, onFirstInteract));
-    };
-    events.forEach((ev) =>
-      window.addEventListener(ev, onFirstInteract, { once: true, passive: true })
-    );
-  });
+  events.forEach((ev) =>
+    globalThis.addEventListener(ev, onFirstInteract, { passive: true })
+  );
 })();
 
 // ---------- Add to Google Calendar ----------
