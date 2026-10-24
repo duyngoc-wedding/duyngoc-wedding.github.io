@@ -86,6 +86,7 @@
       <li><a href="#events">Sự kiện</a></li>
       <li><a href="#gallery">Khoảnh khắc</a></li>
       <li><a href="#rsvp">Xác nhận</a></li>
+      <li><a href="#wishes">Lời chúc</a></li>
       <li><a href="#gift">Mừng cưới</a></li>
     </ul>
   </nav>
@@ -487,18 +488,53 @@
 
         <label>
           <span>Lời chúc gửi đến cô dâu chú rể</span>
-          <textarea name="wish" rows="4" placeholder="Chúc hai bạn trăm năm hạnh phúc…"></textarea>
+          <textarea id="wishInput" name="wish" rows="4" maxlength="500" placeholder="Chúc hai bạn trăm năm hạnh phúc…"></textarea>
+          <small class="wish-counter" id="wishCounter" aria-live="polite">0 / 500</small>
         </label>
 
-        <button type="submit" class="btn-submit">
-          <span>Gửi lời chúc</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        <button type="submit" class="btn-submit" id="rsvpSubmit">
+          <span class="btn-icon btn-icon-arrow" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+          <span class="btn-icon btn-icon-spinner" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="9" opacity=".25"/>
+              <path d="M21 12a9 9 0 0 0-9-9" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span class="btn-icon btn-icon-check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 7"/></svg>
+          </span>
+          <span class="btn-label" data-default="Gửi lời chúc" data-loading="Đang gửi…" data-success="Đã gửi">Gửi lời chúc</span>
         </button>
 
         <p class="form-success" id="formSuccess" aria-live="polite">
           Cảm ơn bạn đã xác nhận! Chúng mình sẽ dành chỗ đẹp nhất cho bạn 🤍
         </p>
       </form>
+    </div>
+  </section>
+
+  <!-- WISHES -->
+  <section class="wishes" id="wishes">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">— Lời chúc —</p>
+        <h2 class="section-title">Những lời yêu thương</h2>
+        <svg class="divider" viewBox="0 0 120 20" aria-hidden="true">
+          <path d="M0 10 H45" stroke="currentColor" stroke-width="1"/>
+          <circle cx="60" cy="10" r="3" stroke="currentColor" fill="none"/>
+          <path d="M75 10 H120" stroke="currentColor" stroke-width="1"/>
+        </svg>
+        <p class="section-sub">Những lời chúc thân thương từ bạn bè và người thân sẽ được lưu giữ ở đây.</p>
+        <p class="wishes-count" id="wishesCount" aria-live="polite" hidden></p>
+      </div>
+
+      <div class="wishes-wall" id="wishesWall" aria-live="polite" aria-busy="true"></div>
+
+      <div class="wishes-actions">
+        <button type="button" class="wishes-more" id="wishesMore" hidden>Xem thêm lời chúc</button>
+      </div>
     </div>
   </section>
 

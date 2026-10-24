@@ -308,17 +308,263 @@ document.querySelectorAll(".copyable").forEach((el) => {
   modal.addEventListener("close", resetGiftBox);
 })();
 
+// ---------- Wishes (Google Apps Script + Google Sheet) ----------
+// Paste your deployed Apps Script Web App URL here. See apps-script.gs for setup.
+const WISHES_ENDPOINT = "https://script.google.com/macros/s/AKfycbzTBDfmKz8q36pMvPggvP3XEu6Q2YDWbpicOqrIx_2XUoevIGqJ-C-_ajJ04RE-mWh1WQ/exec";
+const WISHES_PAGE_SIZE = 6;
+
+const wishesWall = document.getElementById("wishesWall");
+const wishesMoreBtn = document.getElementById("wishesMore");
+const wishesCountEl = document.getElementById("wishesCount");
+
+const WISH_ACCENTS = ["var(--sage-500)", "var(--rose)", "var(--terracotta)", "var(--sage-700)"];
+
+let allWishes = [];
+let shownWishes = 0;
+
+function escapeHtml(s) {
+  return String(s ?? "").replace(/[&<>"']/g, (c) => (
+    { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]
+  ));
+}
+
+function relativeTime(iso) {
+  const t = new Date(iso).getTime();
+  if (!Number.isFinite(t)) return "";
+  const diffSec = Math.max(1, Math.round((Date.now() - t) / 1000));
+  if (diffSec < 60) return "vừa xong";
+  const mins = Math.round(diffSec / 60);
+  if (mins < 60) return `${mins} phút trước`;
+  const hrs = Math.round(mins / 60);
+  if (hrs < 24) return `${hrs} giờ trước`;
+  const days = Math.round(hrs / 24);
+  if (days < 7) return `${days} ngày trước`;
+  const d = new Date(iso);
+  return d.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
+function updateWishesCount() {
+  if (!wishesCountEl) return;
+  const n = allWishes.length;
+  if (!n) { wishesCountEl.hidden = true; return; }
+  wishesCountEl.hidden = false;
+  wishesCountEl.innerHTML = `<b>${n}</b> lời chúc yêu thương`;
+}
+
+function accentFor(index) {
+  return WISH_ACCENTS[((index % WISH_ACCENTS.length) + WISH_ACCENTS.length) % WISH_ACCENTS.length];
+}
+
+function buildWishCard(w, { fresh = false, index = 0 } = {}) {
+  const card = document.createElement("article");
+  card.className = "wish-card" + (fresh ? " is-fresh" : "");
+  card.style.setProperty("--accent", accentFor(index));
+  card.innerHTML = `
+    ${fresh ? '<span class="wish-fresh-badge">Gửi thành công ✓</span>' : ""}
+    <p class="wish-text">${escapeHtml(w.wish)}</p>
+    <div class="wish-meta">
+      <span class="wish-name">${escapeHtml(w.name || "Ẩn danh")}</span>
+      <span class="wish-time" data-time="${escapeHtml(w.timestamp || "")}">${escapeHtml(relativeTime(w.timestamp))}</span>
+    </div>
+  `;
+  requestAnimationFrame(() => card.classList.add("in"));
+  return card;
+}
+
+function renderSkeletons(n = 3) {
+  if (!wishesWall) return;
+  wishesWall.innerHTML = "";
+  const patterns = [
+    ["sk-long", "sk-long", "sk-med"],
+    ["sk-long", "sk-med"],
+    ["sk-long", "sk-long", "sk-long", "sk-short"],
+  ];
+  for (let i = 0; i < n; i++) {
+    const sk = document.createElement("div");
+    sk.className = "wish-skeleton";
+    const lines = patterns[i % patterns.length]
+      .map((cls) => `<span class="sk-line ${cls}"></span>`)
+      .join("");
+    sk.innerHTML = `${lines}<span class="sk-name"></span>`;
+    wishesWall.appendChild(sk);
+  }
+}
+
+function renderMoreWishes() {
+  if (!wishesWall) return;
+  const next = allWishes.slice(shownWishes, shownWishes + WISHES_PAGE_SIZE);
+  next.forEach((w, i) => wishesWall.appendChild(buildWishCard(w, { index: shownWishes + i })));
+  shownWishes += next.length;
+  if (wishesMoreBtn) wishesMoreBtn.hidden = shownWishes >= allWishes.length;
+}
+
+function renderInitialWishes() {
+  if (!wishesWall) return;
+  wishesWall.innerHTML = "";
+  shownWishes = 0;
+  updateWishesCount();
+  if (!allWishes.length) {
+    const empty = document.createElement("div");
+    empty.className = "wishes-state";
+    empty.textContent = "Hãy là người đầu tiên gửi lời chúc ✿";
+    wishesWall.appendChild(empty);
+    if (wishesMoreBtn) wishesMoreBtn.hidden = true;
+    return;
+  }
+  renderMoreWishes();
+}
+
+function prependFreshWish(w) {
+  if (!wishesWall) return null;
+  const empty = wishesWall.querySelector(".wishes-state");
+  if (empty) empty.remove();
+  allWishes.unshift(w);
+  shownWishes += 1;
+  const card = buildWishCard(w, { fresh: true, index: 0 });
+  wishesWall.prepend(card);
+  updateWishesCount();
+  // Fade the badge out after a few seconds (CSS handles the transition)
+  setTimeout(() => card.classList.add("is-badge-fading"), 4000);
+  setTimeout(() => {
+    const b = card.querySelector(".wish-fresh-badge");
+    if (b) b.remove();
+    card.classList.remove("is-badge-fading");
+  }, 5000);
+  return card;
+}
+
+async function fetchWishes() {
+  if (!wishesWall) return;
+  renderSkeletons(3);
+  if (!WISHES_ENDPOINT) {
+    wishesWall.innerHTML = "";
+    const msg = document.createElement("div");
+    msg.className = "wishes-state";
+    msg.textContent = "Lời chúc sẽ hiện ra khi được kết nối.";
+    wishesWall.appendChild(msg);
+    wishesWall.setAttribute("aria-busy", "false");
+    return;
+  }
+  try {
+    const res = await fetch(WISHES_ENDPOINT, { method: "GET", cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    allWishes = Array.isArray(data?.wishes) ? data.wishes : [];
+    renderInitialWishes();
+  } catch (e) {
+    console.warn("Load wishes failed", e);
+    wishesWall.innerHTML = "";
+    const err = document.createElement("div");
+    err.className = "wishes-state";
+    err.textContent = "Không tải được lời chúc. Vui lòng thử lại sau.";
+    wishesWall.appendChild(err);
+  } finally {
+    wishesWall.setAttribute("aria-busy", "false");
+  }
+}
+
+// Refresh relative timestamps every 60s so "vừa xong" / "X phút trước" stay accurate
+setInterval(() => {
+  document.querySelectorAll(".wish-time[data-time]").forEach((el) => {
+    const t = el.dataset.time;
+    if (t) el.textContent = relativeTime(t);
+  });
+}, 60000);
+
+wishesMoreBtn?.addEventListener("click", renderMoreWishes);
+fetchWishes();
+
 // ---------- RSVP form ----------
 const form = document.getElementById("rsvpForm");
 const formSuccess = document.getElementById("formSuccess");
-form?.addEventListener("submit", (e) => {
+const submitBtn = document.getElementById("rsvpSubmit");
+const submitLabel = submitBtn?.querySelector(".btn-label");
+const wishInput = document.getElementById("wishInput");
+const wishCounter = document.getElementById("wishCounter");
+
+function updateWishCounter() {
+  if (!wishInput || !wishCounter) return;
+  const max = Number(wishInput.getAttribute("maxlength")) || 500;
+  const n = wishInput.value.length;
+  wishCounter.textContent = `${n} / ${max}`;
+  wishCounter.classList.toggle("is-near", n >= max * 0.8 && n < max);
+  wishCounter.classList.toggle("is-max", n >= max);
+}
+wishInput?.addEventListener("input", updateWishCounter);
+updateWishCounter();
+
+const SUBMIT_LABEL_KEYS = { loading: "loading", success: "success" };
+function setSubmitState(state) {
+  if (!submitBtn) return;
+  submitBtn.classList.remove("is-loading", "is-success");
+  if (state === "loading") submitBtn.classList.add("is-loading");
+  if (state === "success") submitBtn.classList.add("is-success");
+  if (submitLabel) {
+    const key = SUBMIT_LABEL_KEYS[state] || "default";
+    submitLabel.textContent = submitLabel.dataset[key];
+  }
+}
+
+async function submitRsvp(payload) {
+  if (!WISHES_ENDPOINT) {
+    console.log("RSVP (no endpoint configured):", payload);
+    return { ok: true, offline: true };
+  }
+  // Apps Script web apps don't send CORS headers for application/json preflight,
+  // so send as text/plain to keep the request "simple" and avoid preflight.
+  const res = await fetch(WISHES_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+form?.addEventListener("submit", async (e) => {
   e.preventDefault();
-  // Collect values (hook this up to your backend/Formspree/Google Form later)
   const data = Object.fromEntries(new FormData(form).entries());
-  console.log("RSVP submitted:", data);
-  formSuccess.classList.add("show");
-  form.reset();
-  setTimeout(() => formSuccess.classList.remove("show"), 6000);
+  const wishText = (data.wish || "").trim();
+
+  if (submitBtn) submitBtn.disabled = true;
+  setSubmitState("loading");
+
+  try {
+    await submitRsvp(data);
+    setSubmitState("success");
+    formSuccess.classList.add("show");
+
+    let freshCard = null;
+    if (wishText) {
+      freshCard = prependFreshWish({
+        name: data.name || "Ẩn danh",
+        wish: wishText,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    // Reset form AFTER capturing the wish for the fresh card
+    form.reset();
+    updateWishCounter();
+
+    // Scroll to the user's own new card (not just the section) once it exists
+    if (freshCard) {
+      setTimeout(() => {
+        const y = freshCard.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }, 300);
+    }
+
+    // Restore the button after the success flash
+    setTimeout(() => setSubmitState("default"), 2200);
+    setTimeout(() => formSuccess.classList.remove("show"), 6000);
+  } catch (err) {
+    console.warn("RSVP submit failed", err);
+    showToast("Gửi không thành công, vui lòng thử lại.");
+    setSubmitState("default");
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+  }
 });
 
 // ---------- Music ----------
