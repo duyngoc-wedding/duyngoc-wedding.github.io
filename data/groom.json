@@ -42,5 +42,10 @@
     "endUtc":   "20261129T140000Z",
     "details":  "Trân trọng kính mời quý khách đến chung vui trong ngày cưới của Tường Duy & Như Ngọc.",
     "location": "Queen Plaza Tân Bình, 91B2 Phạm Văn Hai, Tân Sơn Hòa, Hồ Chí Minh"
-  }
+  },
+  "schedule": [
+    { "time": "15:00", "event": "Lễ gia tiên", "note": "Tại tư gia" },
+    { "time": "17:00", "event": "Đón khách",   "note": "Chào mừng quý khách" },
+    { "time": "18:00", "event": "Khai tiệc",   "note": "Bắt đầu tiệc cưới" }
+  ]
 }

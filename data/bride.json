@@ -42,5 +42,10 @@
     "endUtc":   "20261128T073000Z",
     "details":  "Trân trọng kính mời quý khách đến chung vui trong ngày cưới của Như Ngọc & Tường Duy.",
     "location": "Nhà Hàng Tiệc Cưới Trung Tình 2, Thới Hòa, TP. Hồ Chí Minh"
-  }
+  },
+  "schedule": [
+    { "time": "09:00", "event": "Lễ hôn phối", "note": "Giáo Xứ Thới Hòa" },
+    { "time": "10:30", "event": "Đón khách",   "note": "Chào mừng quý khách" },
+    { "time": "11:30", "event": "Khai tiệc",   "note": "Bắt đầu tiệc cưới" }
+  ]
 }

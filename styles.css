@@ -820,6 +820,110 @@ section { position: relative; padding: 120px 0; }
 
 .events .calendar { background: rgba(250, 246, 240, 0.97); }
 
+/* ---------- Day-of schedule timeline ---------- */
+.schedule {
+  max-width: 980px;
+  margin: 0 auto 72px;
+}
+.schedule-head {
+  text-align: center;
+  margin-bottom: 44px;
+}
+.schedule-eyebrow {
+  font-family: var(--font-script);
+  font-size: 24px;
+  color: var(--rose-soft);
+  margin-bottom: 4px;
+}
+.schedule-title {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 3.2vw, 38px);
+  font-style: italic;
+  color: var(--cream);
+  letter-spacing: 1px;
+}
+.schedule-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 340px);
+  justify-content: center;
+}
+
+.sch-timeline {
+  list-style: none;
+  padding: 0 10px;
+  margin: 0;
+  position: relative;
+}
+.sch-timeline::before {
+  content: "";
+  position: absolute;
+  top: 24px; bottom: 24px;
+  left: 108px;
+  width: 1px;
+  background: rgba(250, 246, 240, 0.22);
+}
+.sch-item {
+  display: grid;
+  grid-template-columns: 84px 1fr;
+  gap: 28px;
+  padding: 20px 0;
+  position: relative;
+}
+.sch-item::before {
+  content: "";
+  position: absolute;
+  left: 94px;
+  top: 28px;
+  width: 9px; height: 9px;
+  background: var(--cream);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(74, 90, 63, 0.9), 0 0 0 4px rgba(250, 246, 240, 0.35);
+  z-index: 1;
+}
+.schedule-groom .sch-item::before {
+  box-shadow: 0 0 0 3px rgba(74, 90, 63, 0.9), 0 0 0 4px rgba(223, 230, 216, 0.45);
+}
+.schedule-bride .sch-item::before {
+  box-shadow: 0 0 0 3px rgba(74, 90, 63, 0.9), 0 0 0 4px rgba(232, 205, 203, 0.55);
+}
+
+.sch-time {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--rose-soft);
+  text-align: right;
+  padding-top: 2px;
+  line-height: 1;
+  letter-spacing: 0.5px;
+}
+.sch-colon {
+  display: inline-block;
+  margin: 0 1px;
+  transform: translateY(-2px);
+  opacity: .85;
+}
+.schedule-groom .sch-time { color: var(--sage-100); }
+
+.sch-body {
+  padding-top: 2px;
+}
+.sch-event {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--cream);
+  margin: 0 0 4px;
+  letter-spacing: 0.4px;
+}
+.sch-note {
+  font-size: 13px;
+  color: rgba(250, 246, 240, 0.72);
+  letter-spacing: 0.3px;
+  line-height: 1.5;
+}
+
 /* ---------- Restaurant event (open layout, no card box) ---------- */
 .restaurant-event {
   display: grid;
@@ -1228,6 +1332,7 @@ section { position: relative; padding: 120px 0; }
   margin: 0 auto;
 }
 .wishes-state {
+  column-span: all;
   text-align: center;
   color: var(--muted);
   font-style: italic;
@@ -1923,6 +2028,16 @@ section { position: relative; padding: 120px 0; }
 
   .rsvp-form { padding: 28px 20px; }
   .form-row { grid-template-columns: 1fr; }
+
+  .schedule { margin-bottom: 56px; }
+  .schedule-head { margin-bottom: 32px; }
+  .schedule-grid { max-width: 360px; }
+  .sch-timeline { padding: 0; }
+  .sch-timeline::before { left: 79px; top: 20px; bottom: 20px; }
+  .sch-item { grid-template-columns: 68px 1fr; gap: 22px; padding: 16px 0; }
+  .sch-item::before { left: 75px; top: 24px; }
+  .sch-time { font-size: 22px; }
+  .sch-event { font-size: 18px; }
 
   .restaurant-info { text-align: center; }
   .restaurant-name { font-size: 38px; margin-bottom: 28px; }

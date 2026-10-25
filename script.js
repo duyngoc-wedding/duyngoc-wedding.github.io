@@ -58,6 +58,28 @@ let CALENDAR_EVENT = {
     });
   };
 
+  const applySchedule = (data) => {
+    const list = document.getElementById("schTimeline");
+    const col = document.getElementById("scheduleCol");
+    if (!list || !Array.isArray(data.schedule)) return;
+    if (col) {
+      col.classList.remove("schedule-groom", "schedule-bride");
+      if (data.side === "bride") col.classList.add("schedule-bride");
+      else col.classList.add("schedule-groom");
+    }
+    list.innerHTML = data.schedule.map((item) => {
+      const [h, m] = String(item.time ?? "").split(":");
+      return `
+        <li class="sch-item">
+          <span class="sch-time">${h ?? ""}<span class="sch-colon">:</span>${m ?? ""}</span>
+          <div class="sch-body">
+            <h4 class="sch-event">${item.event ?? ""}</h4>
+            ${item.note ? `<p class="sch-note">${item.note}</p>` : ""}
+          </div>
+        </li>`;
+    }).join("");
+  };
+
   const applyRestaurantNameModifier = (data) => {
     const el = document.getElementById("restaurantName");
     if (!el) return;
@@ -84,6 +106,7 @@ let CALENDAR_EVENT = {
 
     applyActiveCalendarDay(data);
     applyRestaurantNameModifier(data);
+    applySchedule(data);
 
     const coupleGrid = document.getElementById("coupleGrid");
     if (coupleGrid) coupleGrid.classList.toggle("couple-grid--reverse", data.side === "bride");
