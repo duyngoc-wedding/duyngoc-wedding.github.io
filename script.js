@@ -142,6 +142,34 @@ window.addEventListener("load", () => {
   setTimeout(() => loader.classList.add("hide"), 500);
 });
 
+// ---------- Cover letter → open & start music ----------
+(() => {
+  const cover = document.getElementById("cover");
+  const openBtn = document.getElementById("coverOpen");
+  if (!cover || !openBtn) return;
+
+  // Lock scroll while the cover is up
+  document.body.classList.add("cover-locked");
+
+  const openCover = () => {
+    if (cover.classList.contains("is-open")) return;
+    cover.classList.add("is-open");
+    document.body.classList.remove("cover-locked");
+
+    // The click is a user gesture, so audible playback is allowed from here on.
+    const audio = document.getElementById("bgMusic");
+    if (audio) {
+      audio.muted = false;
+      audio.play().catch(() => {});
+    }
+
+    // Remove the cover from the DOM after the exit transition finishes
+    setTimeout(() => cover.remove(), 1000);
+  };
+
+  openBtn.addEventListener("click", openCover);
+})();
+
 // ---------- Nav scroll + mobile menu ----------
 const nav = document.getElementById("nav");
 const navToggle = document.getElementById("navToggle");
@@ -607,6 +635,7 @@ form?.addEventListener("submit", async (e) => {
   };
   audio.addEventListener("play", syncState);
   audio.addEventListener("pause", syncState);
+  syncState();
 
   musicBtn.addEventListener("click", () => {
     if (audio.paused) {
@@ -619,33 +648,15 @@ form?.addEventListener("submit", async (e) => {
   });
 
   // Pause when the tab is hidden; resume on return unless the user paused it.
+  // Only auto-resume once the user has actually started the music (i.e. opened
+  // the cover) — otherwise `play()` is blocked and shows as an unhandled error.
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
       if (!audio.paused) audio.pause();
-    } else if (!userPaused) {
+    } else if (!userPaused && audio.currentTime > 0) {
       audio.play().catch(() => {});
     }
   });
-
-  // Browsers allow muted autoplay but block audible autoplay. Start muted
-  // so the track is already running when the user first interacts, then
-  // unmute on that interaction.
-  audio.muted = true;
-  audio.play().catch(() => {});
-
-  // Use only `click`/`keydown` (not pointerdown/touchstart). Those pre-click
-  // events fire BEFORE the music button's own click handler, which would then
-  // see "already playing" and immediately pause what we just unmuted.
-  const events = ["click", "keydown"];
-  const onFirstInteract = () => {
-    userPaused = false;
-    audio.muted = false;
-    audio.play().catch(() => {});
-    events.forEach((ev) => globalThis.removeEventListener(ev, onFirstInteract));
-  };
-  events.forEach((ev) =>
-    globalThis.addEventListener(ev, onFirstInteract, { passive: true })
-  );
 })();
 
 // ---------- Add to Google Calendar ----------
