@@ -164,7 +164,7 @@ window.addEventListener("load", () => {
     }
 
     // Remove the cover from the DOM after the exit transition finishes
-    setTimeout(() => cover.remove(), 1000);
+    setTimeout(() => cover.remove(), 1500);
   };
 
   openBtn.addEventListener("click", openCover);
