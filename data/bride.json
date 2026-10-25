@@ -26,6 +26,7 @@
   },
   "venue": {
     "tag": "Tiệc cưới",
+    "hall": "",
     "nameHtml": "Trung Tình 2<br/><em>Nhà Hàng Tiệc Cưới</em>",
     "namePlain": "Nhà Hàng Tiệc Cưới Trung Tình 2",
     "nameModifier": "restaurant-name--compact",

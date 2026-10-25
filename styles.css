@@ -1365,12 +1365,26 @@ section { position: relative; padding: 120px 0; }
 
 .restaurant-when {
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  gap: 32px;
+  gap: 14px;
   padding: 20px 0;
   border-top: 1px solid rgba(250, 246, 240, 0.25);
   border-bottom: 1px solid rgba(250, 246, 240, 0.25);
   margin-bottom: 28px;
+}
+.rwhen-hall {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--cream);
+  letter-spacing: 0.5px;
+}
+.rwhen-hall:empty { display: none; }
+.rwhen-cols {
+  display: inline-flex;
+  align-items: center;
+  gap: 32px;
 }
 .rwhen-col {
   display: flex;
@@ -2439,10 +2453,13 @@ section { position: relative; padding: 120px 0; }
   .restaurant-name { font-size: 38px; margin-bottom: 28px; }
   .restaurant-when {
     display: flex;
-    justify-content: center;
-    gap: 20px;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
     margin-bottom: 22px;
   }
+  .rwhen-hall { font-size: 15px; text-align: center; }
+  .rwhen-cols { gap: 20px; }
   .rwhen-col { min-width: 90px; align-items: center; }
   .rwhen-value { font-size: 36px; }
   .rwhen-sub { font-size: 14px; }
