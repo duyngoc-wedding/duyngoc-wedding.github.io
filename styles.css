@@ -278,7 +278,7 @@ body.cover-locked { overflow: hidden; }
   border-radius: 6px;
 }
 .cover-card::before { inset: 12px; }
-.cover-card::after  { inset: 18px; border-color: rgba(192, 139, 106, 0.18); }
+.cover-card::after  { inset: 18px; border-color: rgba(192, 139, 106, 0.18); z-index: -1; }
 
 @keyframes coverCardIn {
   from { opacity: 0; transform: translateY(24px) scale(.96); }
